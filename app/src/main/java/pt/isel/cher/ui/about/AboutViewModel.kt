@@ -8,10 +8,10 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import pt.isel.cher.R
 import pt.isel.cher.domain.Author
 import pt.isel.cher.util.Constants
-import javax.inject.Inject
 
 @HiltViewModel
 class AboutViewModel @Inject constructor() : ViewModel() {

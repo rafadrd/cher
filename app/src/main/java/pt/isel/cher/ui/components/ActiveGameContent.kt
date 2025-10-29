@@ -16,10 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.domain.Game
 import pt.isel.cher.domain.Player
+import pt.isel.cher.ui.theme.CheRTheme
 
 @Composable
 fun ActiveGameContent(game: Game, onCellClick: (Int, Int) -> Unit, onResetGame: () -> Unit) {
@@ -69,4 +71,10 @@ fun ActiveGameContent(game: Game, onCellClick: (Int, Int) -> Unit, onResetGame: 
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ActiveGameContentPreview() {
+    CheRTheme { ActiveGameContent(game = Game(), onCellClick = { _, _ -> }, onResetGame = {}) }
 }

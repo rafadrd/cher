@@ -18,10 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.Player
+import pt.isel.cher.ui.theme.CheRTheme
 import pt.isel.cher.ui.theme.cellSize
 import pt.isel.cher.ui.theme.pieceSize
 
@@ -81,4 +83,10 @@ fun BoardGrid(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BoardGridPreview() {
+    CheRTheme { BoardGrid(board = Board(), onCellClick = { _, _ -> }, enabled = true) }
 }

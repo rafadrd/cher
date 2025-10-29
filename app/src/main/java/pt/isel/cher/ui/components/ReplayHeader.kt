@@ -1,11 +1,17 @@
 package pt.isel.cher.ui.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.domain.Player
+import pt.isel.cher.ui.theme.CheRTheme
 
 @Composable
 fun ReplayHeader(currentMove: Int, totalMoves: Int, currentPlayer: Player?) {
@@ -21,4 +27,15 @@ fun ReplayHeader(currentMove: Int, totalMoves: Int, currentPlayer: Player?) {
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onBackground,
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReplayHeaderPreview() {
+    CheRTheme {
+        Column(modifier = Modifier.padding(16.dp)) {
+            ReplayHeader(currentMove = 0, totalMoves = 60, currentPlayer = null)
+            ReplayHeader(currentMove = 25, totalMoves = 60, currentPlayer = Player.BLACK)
+        }
+    }
 }

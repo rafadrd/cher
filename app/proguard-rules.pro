@@ -20,4 +20,4 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class cher.data.database.entities.** { *; }
+-keep class pt.isel.cher.data.database.entities.** { *; }

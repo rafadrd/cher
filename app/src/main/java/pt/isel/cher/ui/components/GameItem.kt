@@ -81,10 +81,10 @@ fun GameItem(
 fun GameItemPreview() {
     val favoriteInfo =
         FavoriteInfo(
+            id = "10",
             title = "Game Title",
             opponentName = "Opponent Name",
             dateTime = System.currentTimeMillis(),
-            id = "10",
         )
     GameItem(favoriteInfo = favoriteInfo, onClick = {}, onDelete = {})
 }

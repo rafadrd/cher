@@ -12,30 +12,49 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pt.isel.cher.R
+import pt.isel.cher.domain.Board
+import pt.isel.cher.domain.FavoriteGame
+import pt.isel.cher.domain.FavoriteInfo
+import pt.isel.cher.domain.Move
+import pt.isel.cher.domain.Player
+import pt.isel.cher.domain.Position
 import pt.isel.cher.ui.components.BoardGrid
 import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.components.ReplayControls
 import pt.isel.cher.ui.components.ReplayHeader
+import pt.isel.cher.ui.theme.CheRTheme
 
 @Composable
-fun ReplayView(
-    viewModel: ReplayViewModel,
+fun ReplayScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
+    val viewModel: ReplayViewModel = hiltViewModel()
+    ReplayScreenContent(
+        modifier = modifier,
+        uiState = viewModel.uiState.collectAsState().value,
+        onNextMove = { viewModel.goToNextMove() },
+        onPreviousMove = { viewModel.goToPreviousMove() },
+        onBack = onBack,
+    )
+}
+
+@Composable
+private fun ReplayScreenContent(
+    modifier: Modifier = Modifier,
+    uiState: ReplayUiState,
     onNextMove: () -> Unit,
     onPreviousMove: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CherTopBar(title = stringResource(R.string.game_replay_title), onNavigateBack = onBack)
@@ -100,5 +119,52 @@ fun ReplayView(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReplayScreenSuccessPreview() {
+    val sampleMoves =
+        listOf(
+            Move(Position(2, 3), Player.BLACK),
+            Move(Position(2, 4), Player.WHITE),
+            Move(Position(3, 2), Player.BLACK),
+        )
+    var board = Board()
+    sampleMoves.forEach { board = board.playMove(it.position, it.player) ?: board }
+
+    val sampleGame =
+        FavoriteGame(
+            info = FavoriteInfo("1", "Preview Game", "CPU", System.currentTimeMillis()),
+            moves = sampleMoves,
+        )
+
+    CheRTheme {
+        ReplayScreenContent(
+            uiState =
+                ReplayUiState.Success(
+                    favoriteGame = sampleGame,
+                    currentBoard = board,
+                    currentMoveIndex = 3,
+                    totalMoves = 3,
+                ),
+            onNextMove = {},
+            onPreviousMove = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReplayScreenLoadingPreview() {
+    CheRTheme {
+        ReplayScreenContent(
+            uiState = ReplayUiState.Loading,
+            onNextMove = {},
+            onPreviousMove = {},
+            onBack = {},
+        )
     }
 }

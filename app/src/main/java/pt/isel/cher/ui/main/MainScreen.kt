@@ -27,7 +27,7 @@ import pt.isel.cher.ui.components.CherButton
 import pt.isel.cher.ui.theme.CheRTheme
 
 @Composable
-fun MainView(
+fun MainScreen(
     modifier: Modifier = Modifier,
     onPlay: () -> Unit,
     onFavorites: () -> Unit,
@@ -86,5 +86,5 @@ fun MainView(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    CheRTheme { MainView(onPlay = {}, onFavorites = {}, onAbout = {}, onLeave = {}) }
+    CheRTheme { MainScreen(onPlay = {}, onFavorites = {}, onAbout = {}, onLeave = {}) }
 }

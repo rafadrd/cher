@@ -23,10 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.about.AboutActivity" />
-        <activity android:name=".ui.game.GameActivity" />
-        <activity android:name=".ui.favorites.FavoritesActivity" />
-        <activity android:name=".ui.replay.ReplayActivity" />
     </application>
 
 </manifest>

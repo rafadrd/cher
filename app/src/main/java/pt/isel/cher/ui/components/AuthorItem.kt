@@ -43,6 +43,12 @@ fun AuthorItem(author: Author) {
 @Preview(showBackground = true)
 @Composable
 fun AuthorItemPreview() {
-    val author = Author("77777", "Cristiano", "Ronaldo", "77777@cristiano.pt")
+    val author =
+        Author(
+            number = "77777",
+            firstName = "Cristiano",
+            lastName = "Ronaldo",
+            email = "77777@cristiano.pt",
+        )
     CheRTheme { AuthorItem(author) }
 }

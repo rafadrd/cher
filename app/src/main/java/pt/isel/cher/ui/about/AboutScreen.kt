@@ -11,9 +11,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pt.isel.cher.R
 import pt.isel.cher.domain.Author
 import pt.isel.cher.ui.components.AuthorItem
@@ -21,10 +23,23 @@ import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.theme.CheRTheme
 
 @Composable
-fun AboutView(
+fun AboutScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
+    val viewModel: AboutViewModel = hiltViewModel()
+    val context = LocalContext.current
+
+    AboutScreenContent(
+        modifier = modifier,
+        authors = viewModel.authors,
+        onSendEmail = { viewModel.sendEmail(context, viewModel.authors.map { it.email }) },
+        onNavigateBack = onBack,
+    )
+}
+
+@Composable
+private fun AboutScreenContent(
     modifier: Modifier = Modifier,
     authors: List<Author>,
-    onSendEmail: (List<String>) -> Unit,
+    onSendEmail: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     Scaffold(
@@ -35,7 +50,7 @@ fun AboutView(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onSendEmail(authors.map { it.email }) }) {
+            FloatingActionButton(onClick = onSendEmail) {
                 Icon(Icons.Default.Email, stringResource(R.string.send_email_description))
             }
         },
@@ -52,12 +67,12 @@ fun AboutView(
 
 @Preview(showBackground = true)
 @Composable
-fun AboutViewPreview() {
+fun AboutScreenPreview() {
     val authors =
         listOf(
             Author("47207", "Diogo", "Ribeiro", "a47207@alunos.isel.pt"),
             Author("47236", "António", "Coelho", "a47236@alunos.isel.pt"),
             Author("49423", "Rafael", "Pegacho", "a49423@alunos.isel.pt"),
         )
-    CheRTheme { AboutView(authors = authors, onSendEmail = {}, onNavigateBack = {}) }
+    CheRTheme { AboutScreenContent(authors = authors, onSendEmail = {}, onNavigateBack = {}) }
 }

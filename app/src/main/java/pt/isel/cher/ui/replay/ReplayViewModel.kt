@@ -1,5 +1,6 @@
 package pt.isel.cher.ui.replay
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,11 +37,23 @@ sealed class ReplayUiState {
 @HiltViewModel
 class ReplayViewModel
 @Inject
-constructor(private val favoriteGameRepository: FavoriteGameRepository) : ViewModel() {
+constructor(
+    private val favoriteGameRepository: FavoriteGameRepository,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
     private val _uiState = MutableStateFlow<ReplayUiState>(ReplayUiState.Loading)
     val uiState: StateFlow<ReplayUiState> = _uiState.asStateFlow()
 
-    fun loadGame(gameId: String) {
+    init {
+        val gameId: String? = savedStateHandle.get<String>("gameId")
+        if (gameId.isNullOrBlank()) {
+            _uiState.value = ReplayUiState.Error("Invalid game data.")
+        } else {
+            loadGame(gameId)
+        }
+    }
+
+    private fun loadGame(gameId: String) {
         viewModelScope.launch {
             _uiState.value = ReplayUiState.Loading
             try {

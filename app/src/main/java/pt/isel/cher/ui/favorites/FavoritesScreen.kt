@@ -18,21 +18,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pt.isel.cher.R
 import pt.isel.cher.domain.FavoriteInfo
 import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.components.GameItem
 
 @Composable
-fun FavoritesView(
+fun FavoritesScreen(
     modifier: Modifier = Modifier,
-    viewModel: FavoritesViewModel,
     onGameClick: (FavoriteInfo) -> Unit,
     onBack: () -> Unit,
 ) {
+    val viewModel: FavoritesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
+    FavoritesScreenContent(
+        modifier = modifier,
+        uiState = uiState,
+        onGameClick = onGameClick,
+        onDelete = { viewModel.deleteFavoriteGame(it) },
+        onBack = onBack,
+    )
+}
 
+@Composable
+private fun FavoritesScreenContent(
+    modifier: Modifier = Modifier,
+    uiState: FavoritesUiState,
+    onGameClick: (FavoriteInfo) -> Unit,
+    onDelete: (FavoriteInfo) -> Unit,
+    onBack: () -> Unit,
+) {
     Column(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         CherTopBar(title = stringResource(id = R.string.favorites_title), onNavigateBack = onBack)
 
@@ -46,7 +64,7 @@ fun FavoritesView(
             }
 
             is FavoritesUiState.Error -> {
-                val errorMessage = (uiState as FavoritesUiState.Error).message
+                val errorMessage = uiState.message
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
                         text = errorMessage,
@@ -58,7 +76,7 @@ fun FavoritesView(
             }
 
             is FavoritesUiState.Success -> {
-                val favoriteGames = (uiState as FavoritesUiState.Success).favoriteGames
+                val favoriteGames = uiState.favoriteGames
                 if (favoriteGames.isEmpty()) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
@@ -73,12 +91,56 @@ fun FavoritesView(
                             GameItem(
                                 favoriteInfo = favoriteInfo,
                                 onClick = { onGameClick(favoriteInfo) },
-                                onDelete = { viewModel.deleteFavoriteGame(favoriteInfo) },
+                                onDelete = { onDelete(favoriteInfo) },
                             )
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FavoritesScreenSuccessPreview() {
+    val favoriteGames =
+        listOf(
+            FavoriteInfo("1", "Game vs John", "John", System.currentTimeMillis()),
+            FavoriteInfo("2", "Epic Match", "Jane", System.currentTimeMillis() - 86400000),
+        )
+    pt.isel.cher.ui.theme.CheRTheme {
+        FavoritesScreenContent(
+            uiState = FavoritesUiState.Success(favoriteGames),
+            onGameClick = {},
+            onDelete = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FavoritesScreenEmptyPreview() {
+    pt.isel.cher.ui.theme.CheRTheme {
+        FavoritesScreenContent(
+            uiState = FavoritesUiState.Success(emptyList()),
+            onGameClick = {},
+            onDelete = {},
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FavoritesScreenLoadingPreview() {
+    pt.isel.cher.ui.theme.CheRTheme {
+        FavoritesScreenContent(
+            uiState = FavoritesUiState.Loading,
+            onGameClick = {},
+            onDelete = {},
+            onBack = {},
+        )
     }
 }
