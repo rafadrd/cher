@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.Player
-import pt.isel.cher.ui.game.cellSize
-import pt.isel.cher.ui.game.pieceSize
+import pt.isel.cher.ui.theme.cellSize
+import pt.isel.cher.ui.theme.pieceSize
 
 @Composable
 fun BoardGrid(
@@ -38,7 +38,7 @@ fun BoardGrid(
                 .horizontalScroll(rememberScrollState())
                 .background(Color(0xFF0A8031))
                 .padding(8.dp)
-                .border(4.dp, Color.Black),
+                .border(4.dp, Color.Black)
     ) {
         Column {
             board.grid.forEachIndexed { rowIndex, row ->
@@ -46,8 +46,7 @@ fun BoardGrid(
                     row.forEachIndexed { colIndex, cell ->
                         Box(
                             modifier =
-                                Modifier
-                                    .size(cellSize)
+                                Modifier.Companion.size(cellSize)
                                     .background(Color(0xFF004000))
                                     .border(1.dp, Color.Black)
                                     .clickable(enabled = enabled && cell == null) {
@@ -61,7 +60,7 @@ fun BoardGrid(
                                         painter = painterResource(id = R.drawable.black_piece),
                                         contentDescription =
                                             stringResource(R.string.black_piece_desc),
-                                        modifier = Modifier.size(pieceSize),
+                                        modifier = Modifier.Companion.size(pieceSize),
                                         contentScale = ContentScale.Fit,
                                     )
 
@@ -70,7 +69,7 @@ fun BoardGrid(
                                         painter = painterResource(id = R.drawable.white_piece),
                                         contentDescription =
                                             stringResource(R.string.white_piece_desc),
-                                        modifier = Modifier.size(pieceSize),
+                                        modifier = Modifier.Companion.size(pieceSize),
                                         contentScale = ContentScale.Fit,
                                     )
 

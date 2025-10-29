@@ -1,49 +1,36 @@
 package pt.isel.cher.data.repository
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import pt.isel.cher.data.database.dao.FavoriteGameDao
-import pt.isel.cher.data.database.entities.FavoriteGame
-import pt.isel.cher.data.database.entities.MoveEntity
-import pt.isel.cher.data.database.relations.FavoriteGameWithMoves
+import pt.isel.cher.data.mapper.toFavoriteGame
+import pt.isel.cher.data.mapper.toFavoriteGameEntity
+import pt.isel.cher.data.mapper.toFavoriteInfo
+import pt.isel.cher.data.mapper.toFavoriteMoveEntities
+import pt.isel.cher.domain.FavoriteGame
+import pt.isel.cher.domain.FavoriteInfo
 import pt.isel.cher.domain.Game
+import javax.inject.Inject
 
-class FavoriteGameRepository(
-    private val favoriteGameDao: FavoriteGameDao,
-) {
-    fun getAllFavoriteGames(): Flow<List<FavoriteGameWithMoves>> =
-        favoriteGameDao.getAllFavoriteGamesWithMoves()
+class FavoriteGameRepository @Inject constructor(private val favoriteGameDao: FavoriteGameDao) {
+    fun getAllFavoriteGames(): Flow<List<FavoriteInfo>> =
+        favoriteGameDao.getAllFavoriteGamesWithMoves().map { list ->
+            list.map { it.toFavoriteInfo() }
+        }
 
-    fun getFavoriteGameById(gameId: String): Flow<FavoriteGameWithMoves> =
-        favoriteGameDao.getFavoriteGameWithMovesById(gameId)
+    fun getFavoriteGameById(gameId: String): Flow<FavoriteGame> =
+        favoriteGameDao.getFavoriteGameWithMovesById(gameId).map { it.toFavoriteGame() }
 
-    suspend fun addFavoriteGame(
-        game: Game,
-        title: String,
-        opponentName: String,
-    ) {
-        val favoriteGame =
-            FavoriteGame(
-                id = game.id,
-                title = title,
-                opponentName = opponentName,
-                dateTime = System.currentTimeMillis(),
-            )
-
-        val moveEntities =
-            game.board.moves.mapIndexed { index, move ->
-                MoveEntity(
-                    favoriteGameId = game.id,
-                    moveNumber = index + 1,
-                    row = move.position.row,
-                    col = move.position.col,
-                    player = move.player.name,
-                )
-            }
+    suspend fun addFavoriteGame(game: Game, title: String, opponentName: String) {
+        val favoriteGame = game.toFavoriteGameEntity(title, opponentName)
+        val moveEntities = game.toFavoriteMoveEntities()
 
         favoriteGameDao.insertFavoriteGameWithMoves(favoriteGame, moveEntities)
     }
 
-    suspend fun deleteFavoriteGame(favoriteGame: FavoriteGame) {
-        favoriteGameDao.deleteFavoriteGame(favoriteGame)
+    suspend fun isGameFavorited(gameId: String): Boolean = favoriteGameDao.countById(gameId) > 0
+
+    suspend fun deleteFavoriteGame(gameInfo: FavoriteInfo) {
+        favoriteGameDao.deleteFavoriteGameById(gameInfo.id)
     }
 }

@@ -13,17 +13,13 @@ import pt.isel.cher.ui.theme.CheRTheme
 class MainActivity : BaseActivity() {
     override val tag: String = "MainActivity"
 
-    private val navigateToGameIntent: Intent by lazy {
-        Intent(this, GameActivity::class.java)
-    }
+    private val navigateToGameIntent: Intent by lazy { Intent(this, GameActivity::class.java) }
 
     private val navigateToFavouritesIntent: Intent by lazy {
         Intent(this, FavoritesActivity::class.java)
     }
 
-    private val navigateToAboutIntent: Intent by lazy {
-        Intent(this, AboutActivity::class.java)
-    }
+    private val navigateToAboutIntent: Intent by lazy { Intent(this, AboutActivity::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

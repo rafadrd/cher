@@ -41,11 +41,7 @@ fun AboutView(
         },
         content = {
             Column(
-                modifier =
-                    modifier
-                        .fillMaxSize()
-                        .padding(it)
-                        .padding(16.dp),
+                modifier = modifier.fillMaxSize().padding(it).padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 authors.forEach { author -> AuthorItem(author) }
@@ -63,11 +59,5 @@ fun AboutViewPreview() {
             Author("47236", "António", "Coelho", "a47236@alunos.isel.pt"),
             Author("49423", "Rafael", "Pegacho", "a49423@alunos.isel.pt"),
         )
-    CheRTheme {
-        AboutView(
-            authors = authors,
-            onSendEmail = {},
-            onNavigateBack = {},
-        )
-    }
+    CheRTheme { AboutView(authors = authors, onSendEmail = {}, onNavigateBack = {}) }
 }

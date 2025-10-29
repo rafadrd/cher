@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
-import pt.isel.cher.domain.Player
 import pt.isel.cher.ui.components.BoardGrid
 import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.components.ReplayControls
@@ -39,31 +38,21 @@ fun ReplayView(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        CherTopBar(
-            title = stringResource(R.string.game_replay_title),
-            onNavigateBack = onBack,
-        )
+        CherTopBar(title = stringResource(R.string.game_replay_title), onNavigateBack = onBack)
 
         Spacer(Modifier.height(16.dp))
 
-        when (uiState) {
+        when (val state = uiState) {
             is ReplayUiState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
 
             is ReplayUiState.Error -> {
-                val errorState = uiState as ReplayUiState.Error
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = errorState.message,
+                        text = state.message,
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
@@ -72,15 +61,11 @@ fun ReplayView(
             }
 
             is ReplayUiState.Success -> {
-                val successState = uiState as ReplayUiState.Success
                 val currentPlayer =
-                    remember(successState.currentMoveIndex) {
-                        if (successState.currentMoveIndex > 0) {
-                            val lastMoveIndex = successState.currentMoveIndex - 1
-                            successState.favoriteGame.moves
-                                .getOrNull(lastMoveIndex)
-                                ?.player
-                                ?.let { Player.valueOf(it) }
+                    remember(state.currentMoveIndex) {
+                        if (state.currentMoveIndex > 0) {
+                            val lastMoveIndex = state.currentMoveIndex - 1
+                            state.favoriteGame.moves.getOrNull(lastMoveIndex)?.player
                         } else {
                             null
                         }
@@ -91,15 +76,15 @@ fun ReplayView(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     ReplayHeader(
-                        currentMove = successState.currentMoveIndex,
-                        totalMoves = successState.totalMoves,
+                        currentMove = state.currentMoveIndex,
+                        totalMoves = state.totalMoves,
                         currentPlayer = currentPlayer,
                     )
 
                     Spacer(Modifier.height(16.dp))
 
                     BoardGrid(
-                        board = successState.board,
+                        board = state.currentBoard,
                         onCellClick = { _, _ -> },
                         enabled = false,
                     )
@@ -109,8 +94,8 @@ fun ReplayView(
                     ReplayControls(
                         onPreviousMove = onPreviousMove,
                         onNextMove = onNextMove,
-                        isAtStart = successState.isAtStart,
-                        isAtEnd = successState.isAtEnd,
+                        isAtStart = state.isAtStart,
+                        isAtEnd = state.isAtEnd,
                     )
                 }
             }

@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import pt.isel.cher.data.database.entities.FavoriteGame
-import pt.isel.cher.data.database.entities.MoveEntity
+import pt.isel.cher.data.database.entities.FavoriteMove
 import pt.isel.cher.data.database.relations.FavoriteGameWithMoves
 
 @Dao
@@ -25,17 +25,19 @@ interface FavoriteGameDao {
     suspend fun insertFavoriteGame(favoriteGame: FavoriteGame)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMoves(moves: List<MoveEntity>)
+    suspend fun insertMoves(moves: List<FavoriteMove>)
 
     @Transaction
-    suspend fun insertFavoriteGameWithMoves(
-        favoriteGame: FavoriteGame,
-        moves: List<MoveEntity>,
-    ) {
+    suspend fun insertFavoriteGameWithMoves(favoriteGame: FavoriteGame, moves: List<FavoriteMove>) {
         insertFavoriteGame(favoriteGame)
         insertMoves(moves)
     }
 
-    @Delete
-    suspend fun deleteFavoriteGame(favoriteGame: FavoriteGame)
+    @Delete suspend fun deleteFavoriteGame(favoriteGame: FavoriteGame)
+
+    @Query("SELECT COUNT(*) FROM favorite_games WHERE id = :gameId")
+    suspend fun countById(gameId: String): Int
+
+    @Query("DELETE FROM favorite_games WHERE id = :gameId")
+    suspend fun deleteFavoriteGameById(gameId: String)
 }

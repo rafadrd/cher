@@ -8,11 +8,7 @@ import pt.isel.cher.R
 import pt.isel.cher.domain.Player
 
 @Composable
-fun ReplayHeader(
-    currentMove: Int,
-    totalMoves: Int,
-    currentPlayer: Player?,
-) {
+fun ReplayHeader(currentMove: Int, totalMoves: Int, currentPlayer: Player?) {
     Text(
         text = stringResource(R.string.move_counter, currentMove, totalMoves),
         style = MaterialTheme.typography.headlineMedium,
@@ -20,7 +16,7 @@ fun ReplayHeader(
     )
     Text(
         text =
-            currentPlayer?.let { stringResource(R.string.current_player, it.name) }
+            currentPlayer?.let { stringResource(R.string.current_player, it.toString()) }
                 ?: stringResource(R.string.game_start),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onBackground,

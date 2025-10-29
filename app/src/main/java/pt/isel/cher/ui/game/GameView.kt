@@ -18,15 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.ui.components.ActiveGameContent
 import pt.isel.cher.ui.components.AddToFavoritesDialog
 import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.components.GameOverContent
-
-val cellSize = 48.dp
-val pieceSize = cellSize * 0.85f
 
 @Composable
 fun GameView(
@@ -41,18 +37,12 @@ fun GameView(
 
     Scaffold(
         topBar = {
-            CherTopBar(
-                title = stringResource(R.string.game_title),
-                onNavigateBack = onBack,
-            )
-        },
+            CherTopBar(title = stringResource(R.string.game_title), onNavigateBack = onBack)
+        }
     ) {
         Column(
             modifier =
-                modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(it),
+                modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(it),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             when (uiState) {
@@ -78,10 +68,7 @@ fun GameView(
 
                 is GameUiState.Error -> {
                     val errorMessage = (uiState as GameUiState.Error).message
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
                             text = errorMessage,
                             color = MaterialTheme.colorScheme.error,

@@ -34,14 +34,9 @@ fun MainView(
     onAbout: () -> Unit,
     onLeave: () -> Unit,
 ) {
-    Box(
-        modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(16.dp),
-    ) {
+    Box(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(16.dp)) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             IconButton(onClick = onAbout) {
@@ -91,12 +86,5 @@ fun MainView(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    CheRTheme {
-        MainView(
-            onPlay = {},
-            onFavorites = {},
-            onAbout = {},
-            onLeave = {},
-        )
-    }
+    CheRTheme { MainView(onPlay = {}, onFavorites = {}, onAbout = {}, onLeave = {}) }
 }

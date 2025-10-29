@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
-import pt.isel.cher.data.database.entities.FavoriteGame
+import pt.isel.cher.domain.FavoriteInfo
 import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.components.GameItem
 
@@ -28,20 +28,13 @@ import pt.isel.cher.ui.components.GameItem
 fun FavoritesView(
     modifier: Modifier = Modifier,
     viewModel: FavoritesViewModel,
-    onGameClick: (FavoriteGame) -> Unit,
+    onGameClick: (FavoriteInfo) -> Unit,
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-    ) {
-        CherTopBar(
-            title = stringResource(id = R.string.favorites_title),
-            onNavigateBack = onBack,
-        )
+    Column(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        CherTopBar(title = stringResource(id = R.string.favorites_title), onNavigateBack = onBack)
 
         Spacer(Modifier.height(8.dp))
 
@@ -67,10 +60,7 @@ fun FavoritesView(
             is FavoritesUiState.Success -> {
                 val favoriteGames = (uiState as FavoritesUiState.Success).favoriteGames
                 if (favoriteGames.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
                             text = stringResource(R.string.no_favorite_games_found),
                             style = MaterialTheme.typography.bodyLarge,
@@ -79,14 +69,11 @@ fun FavoritesView(
                     }
                 } else {
                     LazyColumn {
-                        items(
-                            items = favoriteGames,
-                            key = { it.favoriteGame.id },
-                        ) { favoriteGameWithMoves ->
+                        items(items = favoriteGames, key = { it.id }) { favoriteInfo ->
                             GameItem(
-                                favoriteGame = favoriteGameWithMoves.favoriteGame,
-                                onClick = { onGameClick(favoriteGameWithMoves.favoriteGame) },
-                                onDelete = { viewModel.deleteFavoriteGame(favoriteGameWithMoves) },
+                                favoriteInfo = favoriteInfo,
+                                onClick = { onGameClick(favoriteInfo) },
+                                onDelete = { viewModel.deleteFavoriteGame(favoriteInfo) },
                             )
                         }
                     }

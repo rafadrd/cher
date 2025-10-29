@@ -22,19 +22,9 @@ import pt.isel.cher.domain.Game
 import pt.isel.cher.domain.Player
 
 @Composable
-fun ActiveGameContent(
-    game: Game,
-    onCellClick: (Int, Int) -> Unit,
-    onResetGame: () -> Unit,
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp),
-        ) {
+fun ActiveGameContent(game: Game, onCellClick: (Int, Int) -> Unit, onResetGame: () -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(R.string.current_player_label),
                 style = MaterialTheme.typography.headlineLarge,
@@ -62,13 +52,11 @@ fun ActiveGameContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier =
-                Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(modifier = Modifier.weight(1f)) {
-            }
+            Box(modifier = Modifier.weight(1f)) {}
 
             Spacer(modifier = Modifier.width(16.dp))
 

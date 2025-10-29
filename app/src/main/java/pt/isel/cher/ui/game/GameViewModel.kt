@@ -2,22 +2,20 @@ package pt.isel.cher.ui.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import pt.isel.cher.data.repository.ActiveGameRepository
 import pt.isel.cher.data.repository.FavoriteGameRepository
 import pt.isel.cher.domain.Game
 import pt.isel.cher.domain.Player
 import pt.isel.cher.domain.Position
+import javax.inject.Inject
 
 sealed class GameUiState {
-    data class ActiveGame(
-        val game: Game,
-    ) : GameUiState()
+    data class ActiveGame(val game: Game) : GameUiState()
 
     data class GameOver(
         val game: Game,
@@ -25,12 +23,13 @@ sealed class GameUiState {
         val isFavoriteMarked: Boolean = false,
     ) : GameUiState()
 
-    data class Error(
-        val message: String,
-    ) : GameUiState()
+    data class Error(val message: String) : GameUiState()
 }
 
-class GameViewModel(
+@HiltViewModel
+class GameViewModel
+@Inject
+constructor(
     private val favoriteGameRepository: FavoriteGameRepository,
     private val activeGameRepository: ActiveGameRepository,
 ) : ViewModel() {
@@ -43,10 +42,7 @@ class GameViewModel(
 
     private fun restoreActiveGame() {
         viewModelScope.launch {
-            val savedGame =
-                withContext(Dispatchers.IO) {
-                    activeGameRepository.getActiveGame()
-                }
+            val savedGame = activeGameRepository.getActiveGame()
             _uiState.value =
                 if (savedGame != null && !savedGame.isOver) {
                     GameUiState.ActiveGame(savedGame)
@@ -57,34 +53,23 @@ class GameViewModel(
     }
 
     fun playMove(position: Position) {
-        viewModelScope.launch {
-            val currentState = _uiState.value
-            val currentGame =
-                when (currentState) {
-                    is GameUiState.ActiveGame -> currentState.game
-                    is GameUiState.GameOver -> currentState.game
-                    else -> Game()
-                }
+        val currentState = _uiState.value
+        if (currentState !is GameUiState.ActiveGame) return
 
-            val updatedGame = currentGame.playMove(position)
-            withContext(Dispatchers.IO) {
-                activeGameRepository.saveActiveGame(updatedGame)
-            }
+        viewModelScope.launch {
+            val updatedGame = currentState.game.playMove(position)
+            activeGameRepository.saveActiveGame(updatedGame)
             if (updatedGame.isOver) {
-                _uiState.value = GameUiState.GameOver(updatedGame, updatedGame.winner)
-                viewModelScope.launch(Dispatchers.IO) {
-                    activeGameRepository.clearActiveGame()
-                }
+                val isFavorited = favoriteGameRepository.isGameFavorited(updatedGame.id)
+                _uiState.value = GameUiState.GameOver(updatedGame, updatedGame.winner, isFavorited)
+                activeGameRepository.clearActiveGame()
             } else {
                 _uiState.value = GameUiState.ActiveGame(updatedGame)
             }
         }
     }
 
-    fun markAsFavorite(
-        title: String,
-        opponentName: String,
-    ) {
+    fun markAsFavorite(title: String, opponentName: String) {
         val currentState = _uiState.value
         if (currentState !is GameUiState.GameOver) {
             _uiState.value = GameUiState.Error("Cannot mark an ongoing game as favorite.")
@@ -94,13 +79,11 @@ class GameViewModel(
         viewModelScope.launch {
             val gameToFavorite = currentState.game
             try {
-                withContext(Dispatchers.IO) {
-                    favoriteGameRepository.addFavoriteGame(
-                        game = gameToFavorite,
-                        title = title,
-                        opponentName = opponentName,
-                    )
-                }
+                favoriteGameRepository.addFavoriteGame(
+                    game = gameToFavorite,
+                    title = title,
+                    opponentName = opponentName,
+                )
                 _uiState.value = currentState.copy(isFavoriteMarked = true)
             } catch (e: Exception) {
                 _uiState.value =
@@ -113,10 +96,8 @@ class GameViewModel(
         viewModelScope.launch {
             val newGame = Game()
             _uiState.value = GameUiState.ActiveGame(newGame)
-            withContext(Dispatchers.IO) {
-                activeGameRepository.clearActiveGame()
-                activeGameRepository.saveActiveGame(newGame)
-            }
+            activeGameRepository.clearActiveGame()
+            activeGameRepository.saveActiveGame(newGame)
         }
     }
 }

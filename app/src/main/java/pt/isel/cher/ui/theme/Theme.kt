@@ -15,11 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 private val DarkColorScheme =
-    darkColorScheme(
-        primary = Purple80,
-        secondary = PurpleGrey80,
-        tertiary = Pink80,
-    )
+    darkColorScheme(primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80)
 
 private val LightColorScheme =
     lightColorScheme(
@@ -40,17 +36,8 @@ private val LightColorScheme =
 private val Typo =
     Typography(
         headlineLarge =
-            TextStyle(
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 0.5.sp,
-            ),
-        bodyMedium =
-            TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.5.sp,
-            ),
+            TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp),
+        bodyMedium = TextStyle(fontSize = 16.sp, lineHeight = 24.sp, letterSpacing = 0.5.sp),
     )
 
 @Composable
@@ -70,9 +57,5 @@ fun CheRTheme(
             else -> LightColorScheme
         }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typo,
-        content = content,
-    )
+    MaterialTheme(colorScheme = colorScheme, typography = Typo, content = content)
 }

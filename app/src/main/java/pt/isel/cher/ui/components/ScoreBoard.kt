@@ -19,14 +19,9 @@ import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 
 @Composable
-fun ScoreBoard(
-    modifier: Modifier = Modifier,
-    blackScore: Int,
-    whiteScore: Int,
-) {
+fun ScoreBoard(modifier: Modifier = Modifier, blackScore: Int, whiteScore: Int) {
     Row(
-        modifier =
-            modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

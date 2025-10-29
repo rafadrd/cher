@@ -18,10 +18,7 @@ import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 
 @Composable
-fun AddToFavoritesDialog(
-    onConfirm: (String, String) -> Unit,
-    onDismiss: () -> Unit,
-) {
+fun AddToFavoritesDialog(onConfirm: (String, String) -> Unit, onDismiss: () -> Unit) {
     var gameTitle by remember { mutableStateOf("") }
     var opponentName by remember { mutableStateOf("") }
 
@@ -62,8 +59,5 @@ fun AddToFavoritesDialog(
 @Preview(showBackground = true)
 @Composable
 fun AddToFavoritesDialogPreview() {
-    AddToFavoritesDialog(
-        onConfirm = { _, _ -> },
-        onDismiss = {},
-    )
+    AddToFavoritesDialog(onConfirm = { _, _ -> }, onDismiss = {})
 }

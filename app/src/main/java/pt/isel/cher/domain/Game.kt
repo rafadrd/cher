@@ -13,7 +13,7 @@ data class Game(
         if (isOver) return this
 
         val newBoard = board.playMove(position, currentPlayer) ?: return this
-        val nextPlayer = determineNextPlayer(newBoard, currentPlayer)
+        val nextPlayer = determineNextPlayer(newBoard)
         val gameOver = newBoard.isGameOver()
         val newWinner = if (gameOver) determineWinner(newBoard) else null
 
@@ -28,7 +28,6 @@ data class Game(
     private fun determineWinner(board: Board): Player? {
         val blackScore = board.score(Player.BLACK)
         val whiteScore = board.score(Player.WHITE)
-        println("Final Black Score: $blackScore, Final White Score: $whiteScore")
         return when {
             blackScore > whiteScore -> Player.BLACK
             whiteScore > blackScore -> Player.WHITE
@@ -36,10 +35,7 @@ data class Game(
         }
     }
 
-    private fun determineNextPlayer(
-        board: Board,
-        currentPlayer: Player,
-    ): Player? =
+    private fun determineNextPlayer(board: Board): Player? =
         when {
             board.hasValidMoves(currentPlayer.opponent) -> currentPlayer.opponent
             board.hasValidMoves(currentPlayer) -> currentPlayer

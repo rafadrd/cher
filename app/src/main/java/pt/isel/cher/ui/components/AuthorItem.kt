@@ -21,17 +21,10 @@ import pt.isel.cher.ui.theme.CheRTheme
 @Composable
 fun AuthorItem(author: Author) {
     Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
     ) {
-        Column(
-            Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-        ) {
+        Column(Modifier.padding(16.dp).fillMaxWidth()) {
             Text(
                 text = "${author.firstName} ${author.lastName}",
                 style = MaterialTheme.typography.headlineMedium,
@@ -51,7 +44,5 @@ fun AuthorItem(author: Author) {
 @Composable
 fun AuthorItemPreview() {
     val author = Author("77777", "Cristiano", "Ronaldo", "77777@cristiano.pt")
-    CheRTheme {
-        AuthorItem(author)
-    }
+    CheRTheme { AuthorItem(author) }
 }

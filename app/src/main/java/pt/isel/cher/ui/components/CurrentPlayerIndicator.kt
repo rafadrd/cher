@@ -9,7 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import pt.isel.cher.R
 import pt.isel.cher.domain.Player
-import pt.isel.cher.ui.game.pieceSize
+import pt.isel.cher.ui.theme.pieceSize
 
 @Composable
 fun CurrentPlayerIndicator(currentPlayer: Player) {

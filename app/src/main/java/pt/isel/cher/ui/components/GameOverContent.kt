@@ -29,10 +29,7 @@ fun GameOverContent(
     onAddToFavorites: () -> Unit,
     onResetGame: () -> Unit,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Text(
             text =
                 winner?.let { stringResource(R.string.winner_label, it.toString()) }
