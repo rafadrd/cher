@@ -3,10 +3,13 @@ package pt.isel.cher.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import pt.isel.cher.R
 import pt.isel.cher.data.repository.ActiveGameRepository
 import pt.isel.cher.data.repository.FavoriteGameRepository
 import pt.isel.cher.domain.Game
@@ -36,6 +39,9 @@ constructor(
     private val _uiState = MutableStateFlow<GameUiState>(GameUiState.ActiveGame(Game()))
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
+    private val _toastMessage = Channel<Int>()
+    val toastMessage = _toastMessage.receiveAsFlow()
+
     init {
         restoreActiveGame()
     }
@@ -47,6 +53,7 @@ constructor(
                 if (savedGame != null && !savedGame.isOver) {
                     GameUiState.ActiveGame(savedGame)
                 } else {
+                    activeGameRepository.clearActiveGame()
                     GameUiState.ActiveGame(Game())
                 }
         }
@@ -58,7 +65,6 @@ constructor(
 
         viewModelScope.launch {
             val updatedGame = currentState.game.playMove(position)
-            activeGameRepository.saveActiveGame(updatedGame)
             if (updatedGame.isOver) {
                 val isFavorited = favoriteGameRepository.isGameFavorited(updatedGame.id)
                 _uiState.value = GameUiState.GameOver(updatedGame, updatedGame.winner, isFavorited)
@@ -85,10 +91,18 @@ constructor(
                     opponentName = opponentName,
                 )
                 _uiState.value = currentState.copy(isFavoriteMarked = true)
+                _toastMessage.send(R.string.game_added_to_favorites)
             } catch (e: Exception) {
                 _uiState.value =
                     GameUiState.Error("Failed to mark as favorite: ${e.localizedMessage}")
             }
+        }
+    }
+
+    fun saveActiveGame() {
+        val currentState = _uiState.value
+        if (currentState is GameUiState.ActiveGame) {
+            viewModelScope.launch { activeGameRepository.saveActiveGame(currentState.game) }
         }
     }
 
@@ -97,7 +111,6 @@ constructor(
             val newGame = Game()
             _uiState.value = GameUiState.ActiveGame(newGame)
             activeGameRepository.clearActiveGame()
-            activeGameRepository.saveActiveGame(newGame)
         }
     }
 }

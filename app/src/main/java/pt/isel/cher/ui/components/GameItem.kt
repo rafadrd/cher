@@ -46,16 +46,16 @@ fun GameItem(
     ) {
         Row(
             modifier = Modifier.padding(16.dp).fillMaxWidth(),
-            verticalAlignment = Alignment.Companion.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(text = favoriteInfo.title, style = MaterialTheme.typography.headlineMedium)
-                Spacer(Modifier.Companion.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(id = R.string.opponent_name, favoriteInfo.opponentName),
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Spacer(Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 val dateText =
                     remember(favoriteInfo.dateTime) {
                         DateFormat.getDateTimeInstance().format(Date(favoriteInfo.dateTime))

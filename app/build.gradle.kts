@@ -48,8 +48,6 @@ ksp {
 }
 
 dependencies {
-    implementation(libs.gson)
-
     ksp(libs.room.compiler)
     ksp(libs.hilt.compiler)
 

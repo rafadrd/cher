@@ -28,7 +28,7 @@ fun CurrentPlayerIndicator(currentPlayer: Player) {
     Image(
         painter = painterResource(id = imageResource),
         contentDescription = stringResource(R.string.current_player_indicator),
-        modifier = Modifier.Companion.size(pieceSize),
+        modifier = Modifier.size(pieceSize),
         contentScale = ContentScale.Fit,
     )
 }

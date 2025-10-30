@@ -13,6 +13,7 @@ import pt.isel.cher.data.repository.FavoriteGameRepository
 import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.FavoriteGame
 import pt.isel.cher.domain.Move
+import pt.isel.cher.domain.Player
 import javax.inject.Inject
 
 sealed class ReplayUiState {
@@ -29,6 +30,9 @@ sealed class ReplayUiState {
 
         val isAtEnd: Boolean
             get() = currentMoveIndex >= totalMoves
+
+        val currentPlayer: Player?
+            get() = favoriteGame.moves.getOrNull(currentMoveIndex - 1)?.player
     }
 
     data class Error(val message: String) : ReplayUiState()
@@ -79,7 +83,10 @@ constructor(
         if (currentState.isAtEnd) return
 
         val nextMoveIndex = currentState.currentMoveIndex + 1
-        val nextBoard = calculateBoardStateAtIndex(currentState.favoriteGame.moves, nextMoveIndex)
+        val nextMove = currentState.favoriteGame.moves[currentState.currentMoveIndex]
+        val nextBoard =
+            currentState.currentBoard.playMove(nextMove.position, nextMove.player)
+                ?: currentState.currentBoard
 
         _uiState.value =
             currentState.copy(currentMoveIndex = nextMoveIndex, currentBoard = nextBoard)
@@ -97,12 +104,8 @@ constructor(
             currentState.copy(currentMoveIndex = previousMoveIndex, currentBoard = previousBoard)
     }
 
-    private fun calculateBoardStateAtIndex(moves: List<Move>, index: Int): Board {
-        var board = Board()
-        for (i in 0 until index) {
-            val move = moves[i]
-            board = board.playMove(move.position, move.player) ?: board
+    private fun calculateBoardStateAtIndex(moves: List<Move>, index: Int): Board =
+        moves.take(index).fold(Board()) { currentBoard, move ->
+            currentBoard.playMove(move.position, move.player) ?: currentBoard
         }
-        return board
-    }
 }

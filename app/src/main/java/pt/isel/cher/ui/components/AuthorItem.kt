@@ -24,13 +24,13 @@ fun AuthorItem(author: Author) {
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
     ) {
-        Column(Modifier.padding(16.dp).fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
             Text(
                 text = "${author.firstName} ${author.lastName}",
                 style = MaterialTheme.typography.headlineMedium,
             )
 
-            Spacer(Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = stringResource(R.string.author_number, author.number),

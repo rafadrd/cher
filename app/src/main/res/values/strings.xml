@@ -40,5 +40,4 @@
     <string name="play_button">Play</string>
     <string name="favorites_button">Favorites</string>
     <string name="game_added_to_favorites">Game added to favorites</string>
-    <string name="invalid_game_data">Invalid game data.</string>
 </resources>

@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -80,16 +79,6 @@ private fun ReplayScreenContent(
             }
 
             is ReplayUiState.Success -> {
-                val currentPlayer =
-                    remember(state.currentMoveIndex) {
-                        if (state.currentMoveIndex > 0) {
-                            val lastMoveIndex = state.currentMoveIndex - 1
-                            state.favoriteGame.moves.getOrNull(lastMoveIndex)?.player
-                        } else {
-                            null
-                        }
-                    }
-
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth(),
@@ -97,7 +86,7 @@ private fun ReplayScreenContent(
                     ReplayHeader(
                         currentMove = state.currentMoveIndex,
                         totalMoves = state.totalMoves,
-                        currentPlayer = currentPlayer,
+                        currentPlayer = state.currentPlayer,
                     )
 
                     Spacer(Modifier.height(16.dp))

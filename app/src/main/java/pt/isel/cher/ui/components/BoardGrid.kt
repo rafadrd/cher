@@ -5,16 +5,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +26,11 @@ import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.Player
 import pt.isel.cher.ui.theme.CheRTheme
 import pt.isel.cher.ui.theme.cellSize
+import pt.isel.cher.ui.theme.latte_blue
+import pt.isel.cher.ui.theme.latte_green
+import pt.isel.cher.ui.theme.latte_mantle
+import pt.isel.cher.ui.theme.mocha_blue
+import pt.isel.cher.ui.theme.mocha_mantle
 import pt.isel.cher.ui.theme.pieceSize
 
 @Composable
@@ -34,13 +40,18 @@ fun BoardGrid(
     onCellClick: (Int, Int) -> Unit,
     enabled: Boolean,
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val boardContainerColor = if (isDarkTheme) mocha_mantle else latte_mantle
+    // val cellColor = if (isDarkTheme) mocha_blue else latte_blue
+    val cellColor = latte_green
+
     Row(
         modifier =
             modifier
                 .horizontalScroll(rememberScrollState())
-                .background(Color(0xFF0A8031))
+                .background(boardContainerColor)
                 .padding(8.dp)
-                .border(4.dp, Color.Black)
+                .border(4.dp, MaterialTheme.colorScheme.onSurface)
     ) {
         Column {
             board.grid.forEachIndexed { rowIndex, row ->
@@ -48,9 +59,9 @@ fun BoardGrid(
                     row.forEachIndexed { colIndex, cell ->
                         Box(
                             modifier =
-                                Modifier.Companion.size(cellSize)
-                                    .background(Color(0xFF004000))
-                                    .border(1.dp, Color.Black)
+                                Modifier.size(cellSize)
+                                    .background(cellColor)
+                                    .border(1.dp, MaterialTheme.colorScheme.onSurface)
                                     .clickable(enabled = enabled && cell == null) {
                                         onCellClick(rowIndex, colIndex)
                                     },
@@ -62,7 +73,7 @@ fun BoardGrid(
                                         painter = painterResource(id = R.drawable.black_piece),
                                         contentDescription =
                                             stringResource(R.string.black_piece_desc),
-                                        modifier = Modifier.Companion.size(pieceSize),
+                                        modifier = Modifier.size(pieceSize),
                                         contentScale = ContentScale.Fit,
                                     )
 
@@ -71,7 +82,7 @@ fun BoardGrid(
                                         painter = painterResource(id = R.drawable.white_piece),
                                         contentDescription =
                                             stringResource(R.string.white_piece_desc),
-                                        modifier = Modifier.Companion.size(pieceSize),
+                                        modifier = Modifier.size(pieceSize),
                                         contentScale = ContentScale.Fit,
                                     )
 
