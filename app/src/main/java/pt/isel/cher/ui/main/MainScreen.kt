@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Info
@@ -21,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import pt.isel.cher.R
 import pt.isel.cher.ui.components.CherButton
 import pt.isel.cher.ui.theme.CheRTheme
@@ -39,14 +40,14 @@ fun MainScreen(
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            IconButton(onClick = onAbout) {
+            IconButton(onClick = onAbout, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = stringResource(R.string.about_button_desc),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
-            IconButton(onClick = onLeave) {
+            IconButton(onClick = onLeave, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = stringResource(R.string.leave_button_desc),
@@ -62,22 +63,21 @@ fun MainScreen(
         ) {
             Text(
                 text = stringResource(R.string.chelas_reversi_title),
-                fontSize = 36.sp,
-                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 32.dp),
             )
 
             CherButton(
                 text = stringResource(R.string.play_button),
                 onClick = onPlay,
-                modifier = Modifier.fillMaxWidth(0.6f).padding(vertical = 8.dp),
+                modifier = Modifier.width(240.dp).padding(vertical = 8.dp),
             )
 
             CherButton(
                 text = stringResource(R.string.favorites_button),
                 onClick = onFavorites,
-                modifier = Modifier.fillMaxWidth(0.6f).padding(vertical = 8.dp),
+                modifier = Modifier.width(240.dp).padding(vertical = 8.dp),
             )
         }
     }

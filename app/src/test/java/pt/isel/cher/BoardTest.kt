@@ -8,9 +8,9 @@ import junit.framework.TestCase.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pt.isel.cher.domain.Board
+import pt.isel.cher.domain.Board.Companion.BOARD_SIZE
 import pt.isel.cher.domain.Player
 import pt.isel.cher.domain.Position
-import pt.isel.cher.util.Constants.BOARD_SIZE
 
 class BoardTest {
     private lateinit var board: Board
@@ -70,7 +70,7 @@ class BoardTest {
         assertTrue(board.hasValidMoves(Player.BLACK))
         assertTrue(board.hasValidMoves(Player.WHITE))
 
-        var currentBoard = board.playMove(Position(2, 3), Player.BLACK)
+        val currentBoard = board.playMove(Position(2, 3), Player.BLACK)
         assertNotNull(currentBoard)
 
         assertTrue(currentBoard!!.hasValidMoves(Player.WHITE))

@@ -5,4 +5,7 @@ data class Author(
     val firstName: String,
     val lastName: String,
     val email: String,
-)
+) {
+    val fullName: String
+        get() = "$firstName $lastName"
+}

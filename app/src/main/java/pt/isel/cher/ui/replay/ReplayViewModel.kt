@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,9 +13,7 @@ import kotlinx.coroutines.launch
 import pt.isel.cher.data.repository.FavoriteGameRepository
 import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.FavoriteGame
-import pt.isel.cher.domain.Move
 import pt.isel.cher.domain.Player
-import javax.inject.Inject
 
 sealed class ReplayUiState {
     object Loading : ReplayUiState()
@@ -23,8 +22,9 @@ sealed class ReplayUiState {
         val favoriteGame: FavoriteGame,
         val currentBoard: Board,
         val currentMoveIndex: Int,
-        val totalMoves: Int,
     ) : ReplayUiState() {
+        val totalMoves: Int = favoriteGame.moves.size
+
         val isAtStart: Boolean
             get() = currentMoveIndex == 0
 
@@ -63,13 +63,11 @@ constructor(
             try {
                 favoriteGameRepository.getFavoriteGameById(gameId).firstOrNull()?.let { favoriteGame
                     ->
-                    val initialBoard = calculateBoardStateAtIndex(favoriteGame.moves, 0)
                     _uiState.value =
                         ReplayUiState.Success(
                             favoriteGame = favoriteGame,
-                            currentBoard = initialBoard,
+                            currentBoard = Board(),
                             currentMoveIndex = 0,
-                            totalMoves = favoriteGame.moves.size,
                         )
                 } ?: run { _uiState.value = ReplayUiState.Error("Game not found.") }
             } catch (e: Exception) {
@@ -83,13 +81,9 @@ constructor(
         if (currentState.isAtEnd) return
 
         val nextMoveIndex = currentState.currentMoveIndex + 1
-        val nextMove = currentState.favoriteGame.moves[currentState.currentMoveIndex]
-        val nextBoard =
-            currentState.currentBoard.playMove(nextMove.position, nextMove.player)
-                ?: currentState.currentBoard
-
+        val nextBoard = currentState.favoriteGame.replayTo(nextMoveIndex)
         _uiState.value =
-            currentState.copy(currentMoveIndex = nextMoveIndex, currentBoard = nextBoard)
+            currentState.copy(currentBoard = nextBoard, currentMoveIndex = nextMoveIndex)
     }
 
     fun goToPreviousMove() {
@@ -97,15 +91,8 @@ constructor(
         if (currentState.isAtStart) return
 
         val previousMoveIndex = currentState.currentMoveIndex - 1
-        val previousBoard =
-            calculateBoardStateAtIndex(currentState.favoriteGame.moves, previousMoveIndex)
-
+        val previousBoard = currentState.favoriteGame.replayTo(previousMoveIndex)
         _uiState.value =
-            currentState.copy(currentMoveIndex = previousMoveIndex, currentBoard = previousBoard)
+            currentState.copy(currentBoard = previousBoard, currentMoveIndex = previousMoveIndex)
     }
-
-    private fun calculateBoardStateAtIndex(moves: List<Move>, index: Int): Board =
-        moves.take(index).fold(Board()) { currentBoard, move ->
-            currentBoard.playMove(move.position, move.player) ?: currentBoard
-        }
 }

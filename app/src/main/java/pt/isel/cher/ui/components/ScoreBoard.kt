@@ -34,7 +34,7 @@ fun ScoreBoard(modifier: Modifier = Modifier, blackScore: Int, whiteScore: Int) 
                 modifier = Modifier.size(24.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = blackScore.toString(), style = MaterialTheme.typography.headlineSmall)
+            Text(text = blackScore.toString(), style = MaterialTheme.typography.headlineMedium)
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -44,7 +44,7 @@ fun ScoreBoard(modifier: Modifier = Modifier, blackScore: Int, whiteScore: Int) 
                 modifier = Modifier.size(24.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = whiteScore.toString(), style = MaterialTheme.typography.headlineSmall)
+            Text(text = whiteScore.toString(), style = MaterialTheme.typography.headlineMedium)
         }
     }
 }

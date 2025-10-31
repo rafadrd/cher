@@ -1,26 +1,21 @@
 package pt.isel.cher.ui.replay
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pt.isel.cher.R
-import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.FavoriteGame
 import pt.isel.cher.domain.FavoriteInfo
 import pt.isel.cher.domain.Move
@@ -28,6 +23,8 @@ import pt.isel.cher.domain.Player
 import pt.isel.cher.domain.Position
 import pt.isel.cher.ui.components.BoardGrid
 import pt.isel.cher.ui.components.CherTopBar
+import pt.isel.cher.ui.components.ErrorState
+import pt.isel.cher.ui.components.LoadingState
 import pt.isel.cher.ui.components.ReplayControls
 import pt.isel.cher.ui.components.ReplayHeader
 import pt.isel.cher.ui.theme.CheRTheme
@@ -62,22 +59,11 @@ private fun ReplayScreenContent(
 
         when (val state = uiState) {
             is ReplayUiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
+                LoadingState()
             }
-
             is ReplayUiState.Error -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(
-                        text = state.message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+                ErrorState(message = state.message)
             }
-
             is ReplayUiState.Success -> {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,6 +80,7 @@ private fun ReplayScreenContent(
                     BoardGrid(
                         board = state.currentBoard,
                         onCellClick = { _, _ -> },
+                        validMoves = emptySet(),
                         enabled = false,
                     )
 
@@ -120,8 +107,6 @@ fun ReplayScreenSuccessPreview() {
             Move(Position(2, 4), Player.WHITE),
             Move(Position(3, 2), Player.BLACK),
         )
-    var board = Board()
-    sampleMoves.forEach { board = board.playMove(it.position, it.player) ?: board }
 
     val sampleGame =
         FavoriteGame(
@@ -129,14 +114,15 @@ fun ReplayScreenSuccessPreview() {
             moves = sampleMoves,
         )
 
+    val finalBoard = sampleGame.replayTo(sampleMoves.size)
+
     CheRTheme {
         ReplayScreenContent(
             uiState =
                 ReplayUiState.Success(
                     favoriteGame = sampleGame,
-                    currentBoard = board,
-                    currentMoveIndex = 3,
-                    totalMoves = 3,
+                    currentBoard = finalBoard,
+                    currentMoveIndex = sampleMoves.size,
                 ),
             onNextMove = {},
             onPreviousMove = {},

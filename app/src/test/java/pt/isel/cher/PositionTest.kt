@@ -2,8 +2,8 @@ package pt.isel.cher
 
 import org.junit.Assert.assertNotNull
 import org.junit.Test
+import pt.isel.cher.domain.Board.Companion.BOARD_SIZE
 import pt.isel.cher.domain.Position
-import pt.isel.cher.util.Constants.BOARD_SIZE
 
 class PositionTest {
     @Test

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -49,7 +50,7 @@ fun GameItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = favoriteInfo.title, style = MaterialTheme.typography.headlineMedium)
+                Text(text = favoriteInfo.title, style = MaterialTheme.typography.titleLarge)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(id = R.string.opponent_name, favoriteInfo.opponentName),
@@ -66,10 +67,11 @@ fun GameItem(
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
-            IconButton(onClick = { onDelete() }) {
+            IconButton(onClick = { onDelete() }, modifier = Modifier.size(48.dp)) {
                 Image(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.delete_favorite_game),
+                    contentDescription =
+                        stringResource(R.string.delete_favorite_game_desc, favoriteInfo.title),
                 )
             }
         }

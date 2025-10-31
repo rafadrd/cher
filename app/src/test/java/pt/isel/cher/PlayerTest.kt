@@ -13,7 +13,7 @@ class PlayerTest {
 
     @Test
     fun `toString returns display name`() {
-        assertEquals("Black", Player.BLACK.toString())
-        assertEquals("White", Player.WHITE.toString())
+        assertEquals("BLACK", Player.BLACK.toString())
+        assertEquals("WHITE", Player.WHITE.toString())
     }
 }

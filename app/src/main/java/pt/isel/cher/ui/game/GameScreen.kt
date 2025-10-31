@@ -2,14 +2,20 @@ package pt.isel.cher.ui.game
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -36,9 +41,11 @@ import pt.isel.cher.domain.Position
 import pt.isel.cher.ui.components.AddToFavoritesDialog
 import pt.isel.cher.ui.components.CherButton
 import pt.isel.cher.ui.components.CherTopBar
-import pt.isel.cher.ui.components.CurrentPlayerIndicator
+import pt.isel.cher.ui.components.ErrorState
 import pt.isel.cher.ui.components.GameScreenLayout
+import pt.isel.cher.ui.components.PlayerInfoCard
 import pt.isel.cher.ui.theme.CheRTheme
+import pt.isel.cher.ui.util.toDisplayString
 
 @Composable
 fun GameScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
@@ -86,20 +93,33 @@ private fun GameScreenContent(
         ) {
             when (uiState) {
                 is GameUiState.ActiveGame -> {
+                    val game = uiState.game
+
                     GameScreenLayout(
-                        game = uiState.game,
+                        game = game,
                         onCellClick = onCellClick,
+                        validMoves = uiState.validMoves,
                         topContent = {
                             Row(
+                                modifier =
+                                    Modifier.fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(16.dp),
                             ) {
-                                Text(
-                                    text = stringResource(R.string.current_player_label),
-                                    style = MaterialTheme.typography.headlineLarge,
+                                PlayerInfoCard(
+                                    player = Player.BLACK,
+                                    score = game.board.score(Player.BLACK),
+                                    isCurrentPlayer = game.currentPlayer == Player.BLACK,
+                                    modifier = Modifier.weight(1f),
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                CurrentPlayerIndicator(currentPlayer = uiState.game.currentPlayer)
+                                Spacer(modifier = Modifier.width(16.dp))
+                                PlayerInfoCard(
+                                    player = Player.WHITE,
+                                    score = game.board.score(Player.WHITE),
+                                    isCurrentPlayer = game.currentPlayer == Player.WHITE,
+                                    modifier = Modifier.weight(1f),
+                                )
                             }
                         },
                         bottomContent = {
@@ -120,16 +140,8 @@ private fun GameScreenContent(
                     GameScreenLayout(
                         game = uiState.game,
                         onCellClick = { _, _ -> },
-                        topContent = {
-                            Text(
-                                text =
-                                    uiState.winner?.let {
-                                        stringResource(R.string.winner_label, it.toString())
-                                    } ?: stringResource(R.string.draw_label),
-                                style = MaterialTheme.typography.headlineLarge,
-                                modifier = Modifier.padding(16.dp),
-                            )
-                        },
+                        validMoves = emptySet(),
+                        topContent = { GameOverContent(winner = uiState.winner) },
                         bottomContent = {
                             Box(modifier = Modifier.weight(1f)) {
                                 CherButton(
@@ -155,15 +167,7 @@ private fun GameScreenContent(
                 }
 
                 is GameUiState.Error -> {
-                    val errorMessage = uiState.message
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = errorMessage,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
+                    ErrorState(message = uiState.message)
                 }
             }
 
@@ -180,12 +184,36 @@ private fun GameScreenContent(
     }
 }
 
+@Composable
+private fun GameOverContent(winner: Player?) {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(
+            imageVector = Icons.Default.EmojiEvents,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(64.dp),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text =
+                winner?.let { stringResource(R.string.winner_label, it.toDisplayString()) }
+                    ?: stringResource(R.string.draw_label),
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GameScreenActivePreview() {
     CheRTheme {
         GameScreenContent(
-            uiState = GameUiState.ActiveGame(Game()),
+            uiState = GameUiState.ActiveGame(Game(), emptySet()),
             onCellClick = { _, _ -> },
             onAddToFavorites = { _, _ -> },
             onBack = {},

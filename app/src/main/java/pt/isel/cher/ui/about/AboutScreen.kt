@@ -27,7 +27,8 @@ import pt.isel.cher.domain.Author
 import pt.isel.cher.ui.components.AuthorItem
 import pt.isel.cher.ui.components.CherTopBar
 import pt.isel.cher.ui.theme.CheRTheme
-import pt.isel.cher.util.Constants
+
+private const val TAG = "AboutScreen"
 
 @Composable
 fun AboutScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
@@ -46,7 +47,7 @@ fun AboutScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
             try {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Log.e(Constants.TAG, context.getString(R.string.no_email_clients), e)
+                Log.e(TAG, context.getString(R.string.no_email_clients), e)
                 Toast.makeText(
                         context,
                         context.getString(R.string.no_email_client_found),

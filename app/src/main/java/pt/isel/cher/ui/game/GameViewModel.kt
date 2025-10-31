@@ -3,6 +3,7 @@ package pt.isel.cher.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,13 +13,13 @@ import kotlinx.coroutines.launch
 import pt.isel.cher.R
 import pt.isel.cher.data.repository.ActiveGameRepository
 import pt.isel.cher.data.repository.FavoriteGameRepository
+import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.Game
 import pt.isel.cher.domain.Player
 import pt.isel.cher.domain.Position
-import javax.inject.Inject
 
 sealed class GameUiState {
-    data class ActiveGame(val game: Game) : GameUiState()
+    data class ActiveGame(val game: Game, val validMoves: Set<Position>) : GameUiState()
 
     data class GameOver(
         val game: Game,
@@ -36,7 +37,10 @@ constructor(
     private val favoriteGameRepository: FavoriteGameRepository,
     private val activeGameRepository: ActiveGameRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<GameUiState>(GameUiState.ActiveGame(Game()))
+    private val _uiState =
+        MutableStateFlow<GameUiState>(
+            GameUiState.ActiveGame(Game(), Board.getValidMoves(Board(), Player.BLACK))
+        )
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     private val _toastMessage = Channel<Int>()
@@ -49,13 +53,13 @@ constructor(
     private fun restoreActiveGame() {
         viewModelScope.launch {
             val savedGame = activeGameRepository.getActiveGame()
-            _uiState.value =
-                if (savedGame != null && !savedGame.isOver) {
-                    GameUiState.ActiveGame(savedGame)
-                } else {
-                    activeGameRepository.clearActiveGame()
-                    GameUiState.ActiveGame(Game())
-                }
+            if (savedGame != null && !savedGame.isOver) {
+                val validMoves = Board.getValidMoves(savedGame.board, savedGame.currentPlayer)
+                _uiState.value = GameUiState.ActiveGame(savedGame, validMoves)
+            } else {
+                activeGameRepository.clearActiveGame()
+                resetGame()
+            }
         }
     }
 
@@ -70,7 +74,8 @@ constructor(
                 _uiState.value = GameUiState.GameOver(updatedGame, updatedGame.winner, isFavorited)
                 activeGameRepository.clearActiveGame()
             } else {
-                _uiState.value = GameUiState.ActiveGame(updatedGame)
+                val validMoves = Board.getValidMoves(updatedGame.board, updatedGame.currentPlayer)
+                _uiState.value = GameUiState.ActiveGame(updatedGame, validMoves)
             }
         }
     }
@@ -109,7 +114,8 @@ constructor(
     fun resetGame() {
         viewModelScope.launch {
             val newGame = Game()
-            _uiState.value = GameUiState.ActiveGame(newGame)
+            val validMoves = Board.getValidMoves(newGame.board, newGame.currentPlayer)
+            _uiState.value = GameUiState.ActiveGame(newGame, validMoves)
             activeGameRepository.clearActiveGame()
         }
     }

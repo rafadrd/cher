@@ -9,10 +9,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import pt.isel.cher.domain.Board
+import pt.isel.cher.domain.Board.Companion.BOARD_SIZE
 import pt.isel.cher.domain.Game
 import pt.isel.cher.domain.Player
 import pt.isel.cher.domain.Position
-import pt.isel.cher.util.Constants.BOARD_SIZE
 
 class GameTest {
     private lateinit var game: Game

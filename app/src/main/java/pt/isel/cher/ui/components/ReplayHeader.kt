@@ -12,19 +12,20 @@ import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.domain.Player
 import pt.isel.cher.ui.theme.CheRTheme
+import pt.isel.cher.ui.util.toDisplayString
 
 @Composable
 fun ReplayHeader(currentMove: Int, totalMoves: Int, currentPlayer: Player?) {
     Text(
         text = stringResource(R.string.move_counter, currentMove, totalMoves),
-        style = MaterialTheme.typography.headlineMedium,
+        style = MaterialTheme.typography.headlineSmall,
         color = MaterialTheme.colorScheme.onBackground,
     )
     Text(
         text =
-            currentPlayer?.let { stringResource(R.string.current_player, it.toString()) }
+            currentPlayer?.let { stringResource(R.string.current_player, it.toDisplayString()) }
                 ?: stringResource(R.string.game_start),
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onBackground,
     )
 }

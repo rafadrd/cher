@@ -1,30 +1,58 @@
 package pt.isel.cher.domain
 
-import pt.isel.cher.util.Constants
-
 data class Board(
     val moves: List<Move> = emptyList(),
     val grid: List<List<Player?>> = initializeGrid(),
 ) {
     companion object {
+        const val BOARD_SIZE = 8
+        val DIRECTIONS =
+            listOf(
+                Direction(-1, 0),
+                Direction(-1, 1),
+                Direction(0, 1),
+                Direction(1, 1),
+                Direction(1, 0),
+                Direction(1, -1),
+                Direction(0, -1),
+                Direction(-1, -1),
+            )
+
         fun initializeGrid(): List<List<Player?>> {
-            val grid =
-                List(Constants.BOARD_SIZE) { MutableList<Player?>(Constants.BOARD_SIZE) { null } }
+            val grid = List(BOARD_SIZE) { MutableList<Player?>(BOARD_SIZE) { null } }
             grid[3][3] = Player.WHITE
             grid[4][4] = Player.WHITE
             grid[3][4] = Player.BLACK
             grid[4][3] = Player.BLACK
             return grid
         }
+
+        fun getValidMoves(board: Board, player: Player): Set<Position> {
+            return board.grid.indices
+                .flatMap { row ->
+                    board.grid[row].indices.mapNotNull { col ->
+                        val pos = Position(row, col)
+                        if (board.isValidMove(pos, player)) pos else null
+                    }
+                }
+                .toSet()
+        }
     }
 
     fun playMove(position: Position, player: Player): Board? {
         if (!isValidMove(position, player)) return null
+        return applyMove(position, player)
+    }
 
+    fun forcePlayMove(position: Position, player: Player): Board {
+        return applyMove(position, player)
+    }
+
+    private fun applyMove(position: Position, player: Player): Board {
         val newGrid = grid.map { it.toMutableList() }
         newGrid[position.row][position.col] = player
 
-        Constants.DIRECTIONS.forEach { direction ->
+        DIRECTIONS.forEach { direction ->
             collectPiecesToFlip(position, direction, player)?.forEach { pos ->
                 newGrid[pos.row][pos.col] = player
             }
@@ -61,7 +89,7 @@ data class Board(
             return false
         }
 
-        return Constants.DIRECTIONS.any { direction ->
+        return DIRECTIONS.any { direction ->
             var currentRow = position.row + direction.deltaRow
             var currentCol = position.col + direction.deltaCol
             var hasOpponentBetween = false
@@ -91,8 +119,8 @@ data class Board(
 
     fun isGameOver(): Boolean =
         (!hasValidMoves(Player.BLACK) && !hasValidMoves(Player.WHITE)) ||
-            moves.size == Constants.BOARD_SIZE * Constants.BOARD_SIZE
+            moves.size == BOARD_SIZE * BOARD_SIZE
 
     private fun isWithinBounds(row: Int, col: Int): Boolean =
-        row in 0 until Constants.BOARD_SIZE && col in 0 until Constants.BOARD_SIZE
+        row in 0 until BOARD_SIZE && col in 0 until BOARD_SIZE
 }

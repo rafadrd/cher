@@ -40,4 +40,8 @@
     <string name="play_button">Play</string>
     <string name="favorites_button">Favorites</string>
     <string name="game_added_to_favorites">Game added to favorites</string>
+    <string name="player_score_desc">Score for %1$s player: %2$d</string>
+    <string name="delete_favorite_game_desc">Delete favorite game titled %1$s</string>
+    <string name="player_black">Black</string>
+    <string name="player_white">White</string>
 </resources>

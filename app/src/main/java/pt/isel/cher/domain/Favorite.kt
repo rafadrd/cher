@@ -7,4 +7,9 @@ data class FavoriteInfo(
     val dateTime: Long,
 )
 
-data class FavoriteGame(val info: FavoriteInfo, val moves: List<Move>)
+data class FavoriteGame(val info: FavoriteInfo, val moves: List<Move>) {
+    fun replayTo(moveIndex: Int): Board =
+        moves.take(moveIndex).fold(Board()) { board, move ->
+            board.forcePlayMove(move.position, move.player)
+        }
+}

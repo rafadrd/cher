@@ -5,16 +5,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import pt.isel.cher.data.database.entities.ActiveGame
-import pt.isel.cher.util.Constants
+import pt.isel.cher.data.database.entities.ActiveGame.Companion.ACTIVE_GAME_ID
 
 @Dao
 interface ActiveGameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveActiveGame(activeGame: ActiveGame)
 
-    @Query("SELECT * FROM active_game WHERE id = :activeGameId")
-    suspend fun getActiveGame(activeGameId: Int = Constants.ACTIVE_GAME_ID): ActiveGame?
+    @Query("SELECT * FROM active_game WHERE id = :id")
+    suspend fun getActiveGame(id: Int = ACTIVE_GAME_ID): ActiveGame?
 
-    @Query("DELETE FROM active_game WHERE id = :activeGameId")
-    suspend fun deleteActiveGame(activeGameId: Int = Constants.ACTIVE_GAME_ID)
+    @Query("DELETE FROM active_game WHERE id = :id")
+    suspend fun deleteActiveGame(id: Int = ACTIVE_GAME_ID)
 }

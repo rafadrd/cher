@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import pt.isel.cher.R
 import pt.isel.cher.domain.Player
 import pt.isel.cher.ui.theme.CheRTheme
-import pt.isel.cher.ui.theme.pieceSize
 
 @Composable
 fun CurrentPlayerIndicator(currentPlayer: Player) {
@@ -28,7 +27,7 @@ fun CurrentPlayerIndicator(currentPlayer: Player) {
     Image(
         painter = painterResource(id = imageResource),
         contentDescription = stringResource(R.string.current_player_indicator),
-        modifier = Modifier.size(pieceSize),
+        modifier = Modifier.size(60.dp),
         contentScale = ContentScale.Fit,
     )
 }
