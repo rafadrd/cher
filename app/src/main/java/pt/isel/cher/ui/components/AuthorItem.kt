@@ -30,7 +30,7 @@ fun AuthorItem(author: Author) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = stringResource(R.string.author_number, author.number),
+                text = stringResource(R.string.about_author_item_number, author.number),
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

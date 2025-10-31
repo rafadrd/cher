@@ -43,14 +43,14 @@ fun MainScreen(
             IconButton(onClick = onAbout, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = stringResource(R.string.about_button_desc),
+                    contentDescription = stringResource(R.string.main_button_about_description),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
             IconButton(onClick = onLeave, modifier = Modifier.size(48.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                    contentDescription = stringResource(R.string.leave_button_desc),
+                    contentDescription = stringResource(R.string.main_button_leave_description),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -62,20 +62,20 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.chelas_reversi_title),
+                text = stringResource(R.string.main_screen_title),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 32.dp),
             )
 
             CherButton(
-                text = stringResource(R.string.play_button),
+                text = stringResource(R.string.main_button_play),
                 onClick = onPlay,
                 modifier = Modifier.width(240.dp).padding(vertical = 8.dp),
             )
 
             CherButton(
-                text = stringResource(R.string.favorites_button),
+                text = stringResource(R.string.main_button_favorites),
                 onClick = onFavorites,
                 modifier = Modifier.width(240.dp).padding(vertical = 8.dp),
             )

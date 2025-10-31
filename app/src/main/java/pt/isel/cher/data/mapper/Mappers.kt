@@ -48,16 +48,19 @@ fun Game.toFavoriteMoveEntities() =
 
 fun Game.toActiveGameEntity() =
     ActiveGame(
-        grid = this.board.grid,
+        moves = this.board.moves,
         currentPlayer = this.currentPlayer,
         isOver = this.isOver,
         winner = this.winner,
     )
 
-fun ActiveGame.toDomain() =
-    Game(
-        board = Board(grid = this.grid, moves = emptyList()),
+fun ActiveGame.toDomain(): Game {
+    val reconstructedBoard =
+        this.moves.fold(Board()) { board, move -> board.forcePlayMove(move.position, move.player) }
+    return Game(
+        board = reconstructedBoard,
         currentPlayer = this.currentPlayer,
         isOver = this.isOver,
         winner = this.winner,
     )
+}

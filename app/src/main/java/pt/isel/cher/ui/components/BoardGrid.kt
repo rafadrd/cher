@@ -127,15 +127,15 @@ private fun AnimatedPiece(player: Player, modifier: Modifier = Modifier) {
     val scale by
         animateFloatAsState(targetValue = if (isPlaced) 1f else 0f, label = "PieceScaleAnimation")
 
-    val (painterRes, descRes) =
+    val resources =
         when (player) {
-            Player.BLACK -> Pair(R.drawable.black_piece, R.string.black_piece_desc)
-            Player.WHITE -> Pair(R.drawable.white_piece, R.string.white_piece_desc)
+            Player.BLACK -> Pair(R.drawable.black_piece, R.string.piece_black_description)
+            Player.WHITE -> Pair(R.drawable.white_piece, R.string.piece_white_description)
         }
 
     Image(
-        painter = painterResource(id = painterRes),
-        contentDescription = stringResource(descRes),
+        painter = painterResource(id = resources.first),
+        contentDescription = stringResource(resources.second),
         modifier =
             modifier.graphicsLayer {
                 scaleX = scale

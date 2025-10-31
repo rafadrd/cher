@@ -3,7 +3,6 @@ package pt.isel.cher.ui.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +16,7 @@ import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.Game
 import pt.isel.cher.domain.Player
 import pt.isel.cher.domain.Position
+import javax.inject.Inject
 
 sealed class GameUiState {
     data class ActiveGame(val game: Game, val validMoves: Set<Position>) : GameUiState()
@@ -96,7 +96,7 @@ constructor(
                     opponentName = opponentName,
                 )
                 _uiState.value = currentState.copy(isFavoriteMarked = true)
-                _toastMessage.send(R.string.game_added_to_favorites)
+                _toastMessage.send(R.string.game_toast_added_to_favorites)
             } catch (e: Exception) {
                 _uiState.value =
                     GameUiState.Error("Failed to mark as favorite: ${e.localizedMessage}")

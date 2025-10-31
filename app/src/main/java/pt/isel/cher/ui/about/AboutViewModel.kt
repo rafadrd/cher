@@ -24,4 +24,9 @@ class AboutViewModel @Inject constructor() : ViewModel() {
     fun onSendEmailClicked() {
         viewModelScope.launch { _sendEmailEvent.send(authors.map { it.email }) }
     }
+
+    companion object {
+        const val EMAIL_SUBJECT = "Congratulations!"
+        const val EMAIL_BODY = "Good work, let's go!!!"
+    }
 }

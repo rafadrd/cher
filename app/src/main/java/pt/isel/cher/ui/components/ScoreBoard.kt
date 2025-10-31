@@ -30,7 +30,7 @@ fun ScoreBoard(modifier: Modifier = Modifier, blackScore: Int, whiteScore: Int) 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = R.drawable.black_piece),
-                contentDescription = stringResource(R.string.black_piece_desc),
+                contentDescription = stringResource(R.string.piece_black_description),
                 modifier = Modifier.size(24.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -40,7 +40,7 @@ fun ScoreBoard(modifier: Modifier = Modifier, blackScore: Int, whiteScore: Int) 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = R.drawable.white_piece),
-                contentDescription = stringResource(R.string.white_piece_desc),
+                contentDescription = stringResource(R.string.piece_white_description),
                 modifier = Modifier.size(24.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))

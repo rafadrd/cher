@@ -40,17 +40,17 @@ fun AboutScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
             val intent =
                 Intent(Intent.ACTION_SENDTO, "mailto:".toUri()).apply {
                     putExtra(Intent.EXTRA_EMAIL, emails.toTypedArray())
-                    putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_subject))
-                    putExtra(Intent.EXTRA_TEXT, context.getString(R.string.email_body))
+                    putExtra(Intent.EXTRA_SUBJECT, AboutViewModel.EMAIL_SUBJECT)
+                    putExtra(Intent.EXTRA_TEXT, AboutViewModel.EMAIL_BODY)
                 }
 
             try {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Log.e(TAG, context.getString(R.string.no_email_clients), e)
+                Log.e(TAG, context.getString(R.string.about_log_no_email_clients), e)
                 Toast.makeText(
                         context,
-                        context.getString(R.string.no_email_client_found),
+                        context.getString(R.string.about_toast_no_email_client),
                         Toast.LENGTH_SHORT,
                     )
                     .show()
@@ -76,13 +76,13 @@ private fun AboutScreenContent(
     Scaffold(
         topBar = {
             CherTopBar(
-                title = stringResource(R.string.about_authors_title),
+                title = stringResource(R.string.about_screen_title),
                 onNavigateBack = onNavigateBack,
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onSendEmail) {
-                Icon(Icons.Default.Email, stringResource(R.string.send_email_description))
+                Icon(Icons.Default.Email, stringResource(R.string.about_fab_send_email_description))
             }
         },
         content = {

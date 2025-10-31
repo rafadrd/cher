@@ -24,7 +24,7 @@ fun CherTopBar(modifier: Modifier = Modifier, title: String, onNavigateBack: () 
             IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back_button_description),
+                    contentDescription = stringResource(R.string.top_bar_back_button_description),
                 )
             }
         },

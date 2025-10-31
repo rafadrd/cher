@@ -83,7 +83,7 @@ private fun GameScreenContent(
 
     Scaffold(
         topBar = {
-            CherTopBar(title = stringResource(R.string.game_title), onNavigateBack = onBack)
+            CherTopBar(title = stringResource(R.string.game_screen_title), onNavigateBack = onBack)
         }
     ) {
         Column(
@@ -127,7 +127,7 @@ private fun GameScreenContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Box(modifier = Modifier.weight(1f)) {
                                 CherButton(
-                                    text = stringResource(R.string.reset_game_button),
+                                    text = stringResource(R.string.game_button_reset),
                                     onClick = onResetGame,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
@@ -147,8 +147,8 @@ private fun GameScreenContent(
                                 CherButton(
                                     text =
                                         if (uiState.isFavoriteMarked)
-                                            stringResource(R.string.favorited_label)
-                                        else stringResource(R.string.add_to_favorites_button),
+                                            stringResource(R.string.game_button_favorited)
+                                        else stringResource(R.string.game_button_add_to_favorites),
                                     onClick = { showAddFavoriteDialog = true },
                                     enabled = !uiState.isFavoriteMarked,
                                     modifier = Modifier.fillMaxWidth(),
@@ -157,7 +157,7 @@ private fun GameScreenContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Box(modifier = Modifier.weight(1f)) {
                                 CherButton(
-                                    text = stringResource(R.string.reset_game_button),
+                                    text = stringResource(R.string.game_button_reset),
                                     onClick = onResetGame,
                                     modifier = Modifier.fillMaxWidth(),
                                 )
@@ -200,8 +200,8 @@ private fun GameOverContent(winner: Player?) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text =
-                winner?.let { stringResource(R.string.winner_label, it.toDisplayString()) }
-                    ?: stringResource(R.string.draw_label),
+                winner?.let { stringResource(R.string.game_gameover_winner, it.toDisplayString()) }
+                    ?: stringResource(R.string.game_gameover_draw),
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.onBackground,
         )

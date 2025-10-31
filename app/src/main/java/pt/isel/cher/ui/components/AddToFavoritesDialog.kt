@@ -24,24 +24,24 @@ fun AddToFavoritesDialog(onConfirm: (String, String) -> Unit, onDismiss: () -> U
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.add_to_favorites_dialog_title)) },
+        title = { Text(stringResource(R.string.favorites_dialog_title)) },
         text = {
             Column {
                 TextField(
                     value = gameTitle,
                     onValueChange = { gameTitle = it },
-                    label = { Text(stringResource(R.string.game_title_label)) },
+                    label = { Text(stringResource(R.string.favorites_dialog_game_title_label)) },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = opponentName,
                     onValueChange = { opponentName = it },
-                    label = { Text(stringResource(R.string.opponent_name_label)) },
+                    label = { Text(stringResource(R.string.favorites_dialog_opponent_name_label)) },
                 )
             }
         },
         dismissButton = {
-            CherButton(onClick = onDismiss, text = stringResource(R.string.cancel_button))
+            CherButton(onClick = onDismiss, text = stringResource(R.string.dialog_button_cancel))
         },
         confirmButton = {
             CherButton(
@@ -50,7 +50,7 @@ fun AddToFavoritesDialog(onConfirm: (String, String) -> Unit, onDismiss: () -> U
                         onConfirm(gameTitle, opponentName)
                     }
                 },
-                text = stringResource(R.string.save_button),
+                text = stringResource(R.string.dialog_button_save),
             )
         },
     )

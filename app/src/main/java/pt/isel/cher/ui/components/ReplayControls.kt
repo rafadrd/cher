@@ -27,13 +27,13 @@ fun ReplayControls(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CherButton(
-            text = stringResource(R.string.previous_button),
+            text = stringResource(R.string.replay_controls_previous_button),
             onClick = onPreviousMove,
             enabled = !isAtStart,
         )
 
         CherButton(
-            text = stringResource(R.string.next_button),
+            text = stringResource(R.string.replay_controls_next_button),
             onClick = onNextMove,
             enabled = !isAtEnd,
         )

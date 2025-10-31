@@ -1,47 +1,57 @@
 <resources>
     <string name="app_name">CheR</string>
-    <string name="send_email_description">Send Email</string>
-    <string name="no_email_clients">No email clients installed.</string>
-    <string name="no_email_client_found">No email client found.</string>
-    <string name="email_subject">Congratulations!</string>
-    <string name="email_body">Good work, let\'s go!!!</string>
-    <string name="about_authors_title">About Authors</string>
-    <string name="back_button_description">Back Button</string>
-    <string name="author_number">Number: %1$s</string>
-    <string name="game_replay_title">Game Replay</string>
-    <string name="move_counter">Move: %1$d / %2$d</string>
-    <string name="current_player">Player: %1$s</string>
-    <string name="game_start">Game Start</string>
-    <string name="previous_button">Previous</string>
-    <string name="next_button">Next</string>
-    <string name="favorites_title">Favorites</string>
-    <string name="opponent_name">Opponent: %1$s</string>
-    <string name="date_played">Date: %1$s</string>
-    <string name="delete_favorite_game">Delete Favorite Game</string>
-    <string name="no_favorite_games_found">No favorite games found.</string>
-    <string name="game_title">Game</string>
-    <string name="current_player_label">Current Player:</string>
-    <string name="reset_game_button">Reset Game</string>
-    <string name="winner_label">Winner: %1$s</string>
-    <string name="draw_label">It\'s a Draw!</string>
-    <string name="favorited_label">Favorite</string>
-    <string name="add_to_favorites_button">Add to Favorites</string>
-    <string name="add_to_favorites_dialog_title">Add Game to Favorites</string>
-    <string name="game_title_label">Game Title</string>
-    <string name="opponent_name_label">Opponent\'s Name</string>
-    <string name="cancel_button">Cancel</string>
-    <string name="save_button">Save</string>
-    <string name="current_player_indicator">Current Player</string>
-    <string name="black_piece_desc">Black Piece</string>
-    <string name="white_piece_desc">White Piece</string>
-    <string name="about_button_desc">About</string>
-    <string name="leave_button_desc">Leave</string>
-    <string name="chelas_reversi_title">Chelas Reversi</string>
-    <string name="play_button">Play</string>
-    <string name="favorites_button">Favorites</string>
-    <string name="game_added_to_favorites">Game added to favorites</string>
-    <string name="player_score_desc">Score for %1$s player: %2$d</string>
-    <string name="delete_favorite_game_desc">Delete favorite game titled %1$s</string>
-    <string name="player_black">Black</string>
-    <string name="player_white">White</string>
+
+    <!-- Generic -->
+    <string name="player_name_black">Black</string>
+    <string name="player_name_white">White</string>
+    <string name="top_bar_back_button_description">Back Button</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_save">Save</string>
+    <string name="piece_black_description">Black Piece</string>
+    <string name="piece_white_description">White Piece</string>
+
+    <!-- Main Screen -->
+    <string name="main_screen_title">Chelas Reversi</string>
+    <string name="main_button_play">Play</string>
+    <string name="main_button_favorites">Favorites</string>
+    <string name="main_button_about_description">About</string>
+    <string name="main_button_leave_description">Leave</string>
+
+    <!-- About Screen -->
+    <string name="about_screen_title">About Authors</string>
+    <string name="about_fab_send_email_description">Send Email</string>
+    <string name="about_log_no_email_clients">No email clients installed.</string>
+    <string name="about_toast_no_email_client">No email client found.</string>
+    <string name="about_author_item_number">Number: %1$s</string>
+
+    <!-- Game Screen -->
+    <string name="game_screen_title">Game</string>
+    <string name="game_button_reset">Reset Game</string>
+    <string name="game_button_add_to_favorites">Add to Favorites</string>
+    <string name="game_button_favorited">Favorite</string>
+    <string name="game_gameover_winner">Winner: %1$s</string>
+    <string name="game_gameover_draw">It\'s a Draw!</string>
+    <string name="game_indicator_current_player_description">Current Player</string>
+    <string name="game_toast_added_to_favorites">Game added to favorites</string>
+
+    <!-- Favorites Dialog -->
+    <string name="favorites_dialog_title">Add Game to Favorites</string>
+    <string name="favorites_dialog_game_title_label">Game Title</string>
+    <string name="favorites_dialog_opponent_name_label">Opponent\'s Name</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_screen_title">Favorites</string>
+    <string name="favorites_empty_state_message">No favorite games found.</string>
+    <string name="favorites_item_opponent">Opponent: %1$s</string>
+    <string name="favorites_item_date">Date: %1$s</string>
+    <string name="favorites_item_delete_description">Delete favorite game titled %1$s</string>
+
+    <!-- Replay Screen -->
+    <string name="replay_screen_title">Game Replay</string>
+    <string name="replay_header_move_counter">Move: %1$d / %2$d</string>
+    <string name="replay_header_current_player">Player: %1$s</string>
+    <string name="replay_header_game_start">Game Start</string>
+    <string name="replay_controls_previous_button">Previous</string>
+    <string name="replay_controls_next_button">Next</string>
+
 </resources>

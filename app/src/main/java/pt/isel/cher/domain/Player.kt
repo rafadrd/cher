@@ -1,5 +1,8 @@
 package pt.isel.cher.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class Player(val dbValue: Char) {
     BLACK('B'),
     WHITE('W');

@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +13,7 @@ import pt.isel.cher.data.repository.FavoriteGameRepository
 import pt.isel.cher.domain.Board
 import pt.isel.cher.domain.FavoriteGame
 import pt.isel.cher.domain.Player
+import javax.inject.Inject
 
 sealed class ReplayUiState {
     object Loading : ReplayUiState()

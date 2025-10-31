@@ -8,6 +8,6 @@ import pt.isel.cher.domain.Player
 @Composable
 fun Player.toDisplayString(): String =
     when (this) {
-        Player.BLACK -> stringResource(id = R.string.player_black)
-        Player.WHITE -> stringResource(id = R.string.player_white)
+        Player.BLACK -> stringResource(id = R.string.player_name_black)
+        Player.WHITE -> stringResource(id = R.string.player_name_white)
     }

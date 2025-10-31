@@ -1,5 +1,8 @@
 package pt.isel.cher.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Position(val row: Int, val col: Int) {
     init {
         require(row in 0 until Board.BOARD_SIZE && col in 0 until Board.BOARD_SIZE) {

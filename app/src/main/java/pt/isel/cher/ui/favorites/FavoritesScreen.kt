@@ -53,7 +53,10 @@ private fun FavoritesScreenContent(
     onBack: () -> Unit,
 ) {
     Column(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        CherTopBar(title = stringResource(id = R.string.favorites_title), onNavigateBack = onBack)
+        CherTopBar(
+            title = stringResource(id = R.string.favorites_screen_title),
+            onNavigateBack = onBack,
+        )
 
         Spacer(Modifier.height(8.dp))
 
@@ -68,7 +71,7 @@ private fun FavoritesScreenContent(
                 val favoriteGames = uiState.favoriteGames
                 if (favoriteGames.isEmpty()) {
                     EmptyState(
-                        message = stringResource(R.string.no_favorite_games_found),
+                        message = stringResource(R.string.favorites_empty_state_message),
                         icon = Icons.Default.Inbox,
                     )
                 } else {

@@ -17,14 +17,15 @@ import pt.isel.cher.ui.util.toDisplayString
 @Composable
 fun ReplayHeader(currentMove: Int, totalMoves: Int, currentPlayer: Player?) {
     Text(
-        text = stringResource(R.string.move_counter, currentMove, totalMoves),
+        text = stringResource(R.string.replay_header_move_counter, currentMove, totalMoves),
         style = MaterialTheme.typography.headlineSmall,
         color = MaterialTheme.colorScheme.onBackground,
     )
     Text(
         text =
-            currentPlayer?.let { stringResource(R.string.current_player, it.toDisplayString()) }
-                ?: stringResource(R.string.game_start),
+            currentPlayer?.let {
+                stringResource(R.string.replay_header_current_player, it.toDisplayString())
+            } ?: stringResource(R.string.replay_header_game_start),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onBackground,
     )

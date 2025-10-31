@@ -53,7 +53,7 @@ private fun ReplayScreenContent(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        CherTopBar(title = stringResource(R.string.game_replay_title), onNavigateBack = onBack)
+        CherTopBar(title = stringResource(R.string.replay_screen_title), onNavigateBack = onBack)
 
         Spacer(Modifier.height(16.dp))
 

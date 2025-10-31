@@ -26,7 +26,7 @@ fun CurrentPlayerIndicator(currentPlayer: Player) {
 
     Image(
         painter = painterResource(id = imageResource),
-        contentDescription = stringResource(R.string.current_player_indicator),
+        contentDescription = stringResource(R.string.game_indicator_current_player_description),
         modifier = Modifier.size(60.dp),
         contentScale = ContentScale.Fit,
     )

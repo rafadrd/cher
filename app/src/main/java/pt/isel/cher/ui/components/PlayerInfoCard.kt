@@ -53,16 +53,16 @@ fun PlayerInfoCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            val (pieceRes, descRes) =
+            val resources =
                 if (player == Player.BLACK) {
-                    Pair(R.drawable.black_piece, R.string.black_piece_desc)
+                    Pair(R.drawable.black_piece, R.string.piece_black_description)
                 } else {
-                    Pair(R.drawable.white_piece, R.string.white_piece_desc)
+                    Pair(R.drawable.white_piece, R.string.piece_white_description)
                 }
 
             Image(
-                painter = painterResource(id = pieceRes),
-                contentDescription = stringResource(id = descRes),
+                painter = painterResource(id = resources.first),
+                contentDescription = stringResource(id = resources.second),
                 modifier = Modifier.size(32.dp),
             )
             Spacer(modifier = Modifier.width(16.dp))

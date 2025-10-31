@@ -10,7 +10,7 @@ import pt.isel.cher.data.database.entities.ActiveGame
 import pt.isel.cher.data.database.entities.FavoriteGame
 import pt.isel.cher.data.database.entities.FavoriteMove
 
-@Database(entities = [FavoriteGame::class, FavoriteMove::class, ActiveGame::class], version = 7)
+@Database(entities = [FavoriteGame::class, FavoriteMove::class, ActiveGame::class], version = 8)
 @TypeConverters(Converters::class)
 abstract class CheRDatabase : RoomDatabase() {
     abstract fun favoriteGameDao(): FavoriteGameDao

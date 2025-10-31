@@ -53,7 +53,11 @@ fun GameItem(
                 Text(text = favoriteInfo.title, style = MaterialTheme.typography.titleLarge)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = stringResource(id = R.string.opponent_name, favoriteInfo.opponentName),
+                    text =
+                        stringResource(
+                            id = R.string.favorites_item_opponent,
+                            favoriteInfo.opponentName,
+                        ),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -63,7 +67,7 @@ fun GameItem(
                     }
 
                 Text(
-                    text = stringResource(id = R.string.date_played, dateText),
+                    text = stringResource(id = R.string.favorites_item_date, dateText),
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -71,7 +75,10 @@ fun GameItem(
                 Image(
                     imageVector = Icons.Default.Delete,
                     contentDescription =
-                        stringResource(R.string.delete_favorite_game_desc, favoriteInfo.title),
+                        stringResource(
+                            R.string.favorites_item_delete_description,
+                            favoriteInfo.title,
+                        ),
                 )
             }
         }

@@ -28,27 +28,34 @@ data class Board(
         }
 
         fun getValidMoves(board: Board, player: Player): Set<Position> {
-            return board.grid.indices
-                .flatMap { row ->
-                    board.grid[row].indices.mapNotNull { col ->
-                        val pos = Position(row, col)
-                        if (board.isValidMove(pos, player)) pos else null
+            val validMoves = mutableSetOf<Position>()
+            for (r in 0 until BOARD_SIZE) {
+                for (c in 0 until BOARD_SIZE) {
+                    if (board.grid[r][c] == null) {
+                        val position = Position(r, c)
+                        if (board.isValidMove(position, player)) {
+                            validMoves.add(position)
+                        }
                     }
                 }
-                .toSet()
+            }
+            return validMoves
         }
+
+        private fun isWithinBounds(row: Int, col: Int): Boolean =
+            row in 0 until BOARD_SIZE && col in 0 until BOARD_SIZE
     }
 
     fun playMove(position: Position, player: Player): Board? {
         if (!isValidMove(position, player)) return null
-        return applyMove(position, player)
+        return applyFlipsAndCopy(position, player)
     }
 
     fun forcePlayMove(position: Position, player: Player): Board {
-        return applyMove(position, player)
+        return applyFlipsAndCopy(position, player)
     }
 
-    private fun applyMove(position: Position, player: Player): Board {
+    private fun applyFlipsAndCopy(position: Position, player: Player): Board {
         val newGrid = grid.map { it.toMutableList() }
         newGrid[position.row][position.col] = player
 
@@ -83,9 +90,7 @@ data class Board(
     }
 
     private fun isValidMove(position: Position, player: Player): Boolean {
-        if (
-            !isWithinBounds(position.row, position.col) || grid[position.row][position.col] != null
-        ) {
+        if (grid[position.row][position.col] != null) {
             return false
         }
 
@@ -112,15 +117,9 @@ data class Board(
         return score
     }
 
-    fun hasValidMoves(player: Player): Boolean =
-        grid.indices.any { row ->
-            grid[row].indices.any { col -> isValidMove(Position(row, col), player) }
-        }
+    fun hasValidMoves(player: Player): Boolean = getValidMoves(this, player).isNotEmpty()
 
     fun isGameOver(): Boolean =
         (!hasValidMoves(Player.BLACK) && !hasValidMoves(Player.WHITE)) ||
             moves.size == BOARD_SIZE * BOARD_SIZE
-
-    private fun isWithinBounds(row: Int, col: Int): Boolean =
-        row in 0 until BOARD_SIZE && col in 0 until BOARD_SIZE
 }

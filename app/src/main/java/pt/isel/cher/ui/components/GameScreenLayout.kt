@@ -29,7 +29,7 @@ fun GameScreenLayout(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         topContent()
 
@@ -37,19 +37,19 @@ fun GameScreenLayout(
             modifier = Modifier.padding(16.dp),
             elevation = CardDefaults.cardElevation(8.dp),
             shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         ) {
             BoardGrid(
                 board = game.board,
                 onCellClick = onCellClick,
                 validMoves = validMoves,
-                enabled = !game.isOver
+                enabled = !game.isOver,
             )
         }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
