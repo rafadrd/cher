@@ -49,34 +49,38 @@ ksp {
 }
 
 dependencies {
+    // Compilers
     ksp(libs.room.compiler)
     ksp(libs.hilt.compiler)
 
+    // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.compose.material.icons)
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.room)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.androidx.core)
-    testImplementation(libs.androidx.runner)
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
 
+    // Navigation
+    implementation(libs.bundles.navigation)
+
+    // Room
+    implementation(libs.room.ktx)
+
+    // Hilt
+    implementation(libs.hilt.android)
+
+    // Unit Tests
+    testImplementation(libs.junit)
+
+    // Android Tests
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
+    // Debug
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
